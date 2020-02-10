@@ -25,4 +25,23 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
     end
     assert_response :unprocessable_entity
   end
+
+
+  test "修改用户" do
+    patch api_v1_user_url(@user), params: { user: { email: @user.email, password: '123456' } }, as: :json
+    assert_response :success
+  end
+
+  # test "无效的邮箱修改用户失败" do
+  #   patch api_v1_user_url(@user), params: { user: { email: 'bad_email', password: '123456' } }, as: :json
+  #   assert_response :unprocessable_entity
+  # end
+
+  test "删除用户测试" do
+    assert_difference('User.count', -1) do
+      delete api_v1_user_url(@user), as: :json
+    end
+    assert_response :no_content
+  end
+
 end
