@@ -1,5 +1,6 @@
 class Api::V1::UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: %i[show update destroy]
+  before_action :check_owner, only: %i[update destroy]
 
   def create
     @user = User.new(user_params)
@@ -10,7 +11,7 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
-  def show 
+  def show
     render json: @user
   end
 
@@ -37,4 +38,7 @@ class Api::V1::UsersController < ApplicationController
     params.require(:user).permit(:email, :password)
   end
 
+  def check_owner
+    head :forbidden unless @user.id == current_user&.id
+  end
 end

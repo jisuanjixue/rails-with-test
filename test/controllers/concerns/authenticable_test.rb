@@ -5,9 +5,8 @@ class AuthenticableTest < ActionDispatch::IntegrationTest
     def initialize
       mock_request = Struct.new(:headers)
       self.request = mock_request.new({})
-    end 
+    end
   end
-
 
   setup do
     @user = users(:one)
@@ -15,7 +14,8 @@ class AuthenticableTest < ActionDispatch::IntegrationTest
   end
 
   test '获取用户用Authorization token' do
-    @authentication.request.headers['Authorization'] = JsonWebToken.encode(user_id: @user.id)
+    @authentication.request.headers['Authorization'] =
+      JsonWebToken.encode(user_id: @user.id)
     assert_equal @user.id, @authentication.current_user.id
   end
 
