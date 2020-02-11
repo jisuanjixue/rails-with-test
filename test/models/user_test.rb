@@ -16,4 +16,10 @@ class UserTest < ActiveSupport::TestCase
     user = User.new(email: other_user.email, password_digest: 'test123')
     assert_not user.valid?
   end
+
+  test '删除用户，改用户的相关产品也要删除' do            
+    assert_difference('Product.count', -1) do
+      users(:one).destroy
+    end
+  end
 end
