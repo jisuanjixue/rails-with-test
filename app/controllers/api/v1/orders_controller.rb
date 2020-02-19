@@ -19,7 +19,7 @@ class Api::V1::OrdersController < ApplicationController
 
   def create
     order = Order.create! user: current_user
-    order.build_placements_with_product_ids_and_quantities (order_params[:product_ids_and_quantities])
+    order.build_placements_with_product_ids_and_quantities(order_params[:product_ids_and_quantities])
     if order.save
       OrderMailer.send_confirmation(order).deliver
       render json: order, status: 201
